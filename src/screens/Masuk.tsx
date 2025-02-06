@@ -8,18 +8,20 @@ const LoginScreen = ({ navigation }: any) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <View className="flex-1 bg-white justify-center px-6">
+    <View className="flex-1 bg-white justify-center px-14">
       {/* Header */}
-      <Text className="text-2xl font-bold text-blue-500">Selamat Datang,</Text>
-      <Text className="text-sm text-gray-500 mb-8">
+      <Text className="text-2xl font-bold text-primary">Selamat Datang,</Text>
+      <Text className="text-base text-primary font-semibold mb-8">
         Login untuk Mengakses Fitur
       </Text>
 
+      <View className="h-64 w-64 bg-gray-300 mb-6" />
+
       {/* Input Email */}
       <View className="mb-4">
-        <Text className="text-sm text-blue-500 mb-1">Email</Text>
-        <View className="flex-row items-center border border-blue-500 rounded-md px-3 py-2">
-          <Mail className="text-blue-500 w-5 h-5" />
+        <Text className="text-sm text-primary mb-1">Email</Text>
+        <View className="flex-row items-center border border-blue-500 rounded-md px-3 py-1">
+          <Mail className="text-primary w-5 h-5" />
           <TextInput
             className="flex-1 ml-3 text-sm"
             placeholder="Email"
@@ -32,9 +34,9 @@ const LoginScreen = ({ navigation }: any) => {
 
       {/* Input Password */}
       <View className="mb-4">
-        <Text className="text-sm text-blue-500 mb-1">Kata Sandi</Text>
-        <View className="flex-row items-center border border-blue-500 rounded-md px-3 py-2">
-          <Lock className="text-blue-500 w-5 h-5" />
+        <Text className="text-sm text-primary mb-1">Kata Sandi</Text>
+        <View className="flex-row items-center border border-blue-500 rounded-md px-3 py-1">
+          <Lock className="text-primary w-5 h-5" />
           <TextInput
             className="flex-1 ml-3 text-sm"
             placeholder="Kata Sandi"
@@ -47,14 +49,14 @@ const LoginScreen = ({ navigation }: any) => {
             className="ml-2"
           >
             {showPassword ? (
-              <EyeOff className="text-blue-500 w-5 h-5" />
+              <EyeOff className="text-primary w-5 h-5" />
             ) : (
-              <Eye className="text-blue-500 w-5 h-5" />
+              <Eye className="text-primary w-5 h-5" />
             )}
           </TouchableOpacity>
         </View>
         <TouchableOpacity className="mt-2">
-          <Text className="text-right text-sm text-blue-500">
+          <Text className="text-right text-sm font-semibold text-primary">
             Lupa Kata Sandi?
           </Text>
         </TouchableOpacity>
@@ -71,8 +73,8 @@ const LoginScreen = ({ navigation }: any) => {
       {/* Footer */}
       <View className="flex-row justify-center">
         <Text className="text-sm text-gray-500">Tidak memiliki akun? </Text>
-        <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-          <Text className="text-sm text-blue-500">Daftar sekarang</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Daftar")}>
+          <Text className="text-sm text-primary font-semibold">Daftar sekarang</Text>
         </TouchableOpacity>
       </View>
     </View>

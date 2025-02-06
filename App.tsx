@@ -2,7 +2,9 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import OnboardingScreen from './src/screens/onBoarding';
-import LoginScreens from './src/screens/login';
+import LoginScreens from './src/screens/Masuk';
+import Daftar from './src/screens/Daftar';
+import AwalScreen from './src/screens/AwalScreen';
 
 const Stack = createStackNavigator();
 
@@ -16,8 +18,18 @@ const App = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Login"
+          name="Masuk"
           component={LoginScreens}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Daftar"
+          component={Daftar}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="AwalScreen"
+          component={AwalScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
