@@ -1,81 +1,92 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
-import { Mail, Lock, Eye, EyeOff } from "lucide-react-native";
+import { Mail, Lock, Eye, EyeOff, ChevronLeft } from "lucide-react-native";
 
 const LoginScreen = ({ navigation }: any) => {
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
+  const handleDaftar = () => {
+    navigation.navigate("Daftar");
+  };
+  const handleMasuk = () => {
+    navigation.navigate("Beranda");
+  };
+
+  const handleLupaKataSandi = () => {
+    navigation.navigate("LupaKataSandi");
+  };
+
   return (
-    <View className="flex-1 bg-white justify-center px-14">
-      {/* Header */}
-      <Text className="text-2xl font-bold text-primary">Selamat Datang,</Text>
-      <Text className="text-base text-primary font-semibold mb-8">
-        Login untuk Mengakses Fitur
-      </Text>
-
-      <View className="h-64 w-64 bg-gray-300 mb-6" />
-
-      {/* Input Email */}
-      <View className="mb-4">
-        <Text className="text-sm text-primary mb-1">Email</Text>
-        <View className="flex-row items-center border border-blue-500 rounded-md px-3 py-1">
-          <Mail className="text-primary w-5 h-5" />
-          <TextInput
-            className="flex-1 ml-3 text-sm"
-            placeholder="Email"
-            keyboardType="email-address"
-            value={email}
-            onChangeText={(text) => setEmail(text)}
+    <View className="flex-1 bg-primary">
+      <View className="h-48">
+        <View className="flex-1 flex-row items-center justify-between px-14">
+          <ChevronLeft
+            className="text-white"
+            onPress={() => navigation.goBack()}
           />
+          <Text className="text-xl text-white font-bold">Masuk</Text>
+          <Text className="w-6" />
         </View>
       </View>
+      <View className="flex-1 bg-white rounded-t-2xl px-14">
+        {/* Header */}
+        <View className="mt-6">
+          <Text className="text-2xl font-bold">Masuk Sekarang!</Text>
+          <Text className="text-gray-500">Masuk untuk mengakses fitur</Text>
+        </View>
 
-      {/* Input Password */}
-      <View className="mb-4">
-        <Text className="text-sm text-primary mb-1">Kata Sandi</Text>
-        <View className="flex-row items-center border border-blue-500 rounded-md px-3 py-1">
-          <Lock className="text-primary w-5 h-5" />
-          <TextInput
-            className="flex-1 ml-3 text-sm"
-            placeholder="Kata Sandi"
-            secureTextEntry={!showPassword}
-            value={password}
-            onChangeText={(text) => setPassword(text)}
-          />
-          <TouchableOpacity
-            onPress={() => setShowPassword(!showPassword)}
-            className="ml-2"
-          >
-            {showPassword ? (
-              <EyeOff className="text-primary w-5 h-5" />
-            ) : (
-              <Eye className="text-primary w-5 h-5" />
-            )}
+        {/* Form */}
+        <View className="mt-8">
+
+          {/* Input Email */}
+          <View className="mb-2">
+            <Text className="text-gray-600 mb-1">Alamat Email</Text>
+            <TextInput
+              placeholder="Masukkan Email"
+              placeholderTextColor="#A0A0A0"
+              className="bg-gray-100 rounded-md px-4 py-3 text-black"
+            />
+          </View>
+
+          {/* Input Kata Sandi */}
+          <View className="mb-2">
+            <Text className="text-gray-600 mb-1">Kata Sandi</Text>
+            <View className="relative flex-row items-center">
+              <TextInput
+                className="flex-1 text-black bg-gray-100 rounded-md px-4 py-3"
+                placeholder="Masukkan Kata Sandi"
+                placeholderTextColor="#A0A0A0"
+                secureTextEntry={!showPassword}
+                value={password}
+                onChangeText={(text) => setPassword(text)}
+              />
+              <TouchableOpacity
+                onPress={() => setShowPassword(!showPassword)}
+                className="ml-2 absolute right-3"
+              >
+                {showPassword ? (
+                  <EyeOff className="text-gray-500 w-5 h-5" />
+                ) : (
+                  <Eye className="text-gray-500 w-5 h-5" />
+                )}
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <View>
+            <Text className="text-right text-primary font-bold" onPress={handleLupaKataSandi}>Lupa Kata Sandi?</Text>
+          </View>
+
+          {/* Tombol Daftar */}
+          <TouchableOpacity className="bg-primary rounded-md py-2 items-center mt-4" onPress={handleMasuk}>
+            <Text className="text-white font-bold text-lg">Masuk</Text>
           </TouchableOpacity>
+
+          <View className="items-center mt-2">
+            <Text>Tidak memiliki akun? <Text className="text-primary font-bold" onPress={handleDaftar}>Daftar Sekarang</Text></Text>
+          </View>
         </View>
-        <TouchableOpacity className="mt-2">
-          <Text className="text-right text-sm font-semibold text-primary">
-            Lupa Kata Sandi?
-          </Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Tombol Masuk */}
-      <TouchableOpacity
-        className="bg-blue-500 rounded-md py-3 mb-4"
-        onPress={() => console.log("Login pressed")}
-      >
-        <Text className="text-white text-center font-medium">Masuk</Text>
-      </TouchableOpacity>
-
-      {/* Footer */}
-      <View className="flex-row justify-center">
-        <Text className="text-sm text-gray-500">Tidak memiliki akun? </Text>
-        <TouchableOpacity onPress={() => navigation.navigate("Daftar")}>
-          <Text className="text-sm text-primary font-semibold">Daftar sekarang</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );

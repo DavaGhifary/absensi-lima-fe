@@ -11,7 +11,7 @@ const Daftar = ({ navigation }: any) => {
   return (
     <View className="flex-1 bg-primary">
       <View className="h-48">
-        <View className="flex-1 flex-row items-center justify-between px-16">
+        <View className="flex-1 flex-row items-center justify-between px-14">
           <ChevronLeft
             className="text-white"
             onPress={() => navigation.goBack()}
@@ -20,9 +20,9 @@ const Daftar = ({ navigation }: any) => {
           <Text className="w-6" />
         </View>
       </View>
-      <View className="flex-1 bg-white rounded-t-2xl px-16">
+      <View className="flex-1 bg-white rounded-t-2xl px-14">
         {/* Header */}
-        <View className="mt-8">
+        <View className="mt-6">
           <Text className="text-2xl font-bold">Daftar Sekarang!</Text>
           <Text className="text-gray-500">Isikan detail info akun mu</Text>
         </View>
@@ -30,7 +30,7 @@ const Daftar = ({ navigation }: any) => {
         {/* Form */}
         <View className="mt-8">
           {/* Input Nama */}
-          <View className="mb-4">
+          <View className="mb-2">
             <Text className="text-gray-600 mb-1">Nama</Text>
             <TextInput
               placeholder="Masukkan Nama"
@@ -40,7 +40,7 @@ const Daftar = ({ navigation }: any) => {
           </View>
 
           {/* Input Email */}
-          <View className="mb-4">
+          <View className="mb-2">
             <Text className="text-gray-600 mb-1">Email</Text>
             <TextInput
               placeholder="Masukkan Email"
@@ -50,7 +50,7 @@ const Daftar = ({ navigation }: any) => {
           </View>
 
           {/* Input NISN */}
-          <View className="mb-4">
+          <View className="mb-2">
             <Text className="text-gray-600 mb-1">NISN</Text>
             <TextInput
               placeholder="Masukkan NISN"
@@ -61,7 +61,7 @@ const Daftar = ({ navigation }: any) => {
           </View>
 
           {/* Input Kata Sandi */}
-          <View className="mb-4">
+          <View className="mb-2">
             <Text className="text-gray-600 mb-1">Kata Sandi</Text>
             <View className="relative flex-row items-center">
               <TextInput

@@ -1,6 +1,6 @@
 import { ChevronLeft, ChevronRight } from "lucide-react-native";
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 
 const OnboardingScreen = ({ navigation }: any) => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -10,16 +10,19 @@ const OnboardingScreen = ({ navigation }: any) => {
       title: "Mudah dan Cepat!",
       description:
         "Kelola kehadiranmu dengan lebih praktis melalui aplikasi absensi sekolah.",
+      image: require("../assets/image/image-slide-1.png"),
     },
     {
       title: "Pantau Kehadiran!",
       description:
         "Lihat statistik kehadiran secara langsung, mulai dari hari ini hingga rekap bulanan.",
+      image: require("../assets/image/image-slide-2.png"),
     },
     {
       title: "Notifikasi Penting!",
       description:
         "Dapatkan pengingat otomatis tentang Absensi, Jam Masuk, dan Jadwal Mapel.",
+      image: require("../assets/image/image-slide-3.png"),
     },
   ];
 
@@ -41,8 +44,12 @@ const OnboardingScreen = ({ navigation }: any) => {
 
   return (
     <View className="flex-1 bg-white justify-center items-center">
-      {/* Placeholder untuk gambar */}
-      <View className="h-64 w-64 bg-gray-300 mb-6" />
+      {/* Gambar Onboarding */}
+      <Image
+        source={pages[currentPage].image}
+        className="w-72 h-72 mb-6"
+        resizeMode="contain"
+      />
 
       {/* Judul dan Deskripsi */}
       <Text className="text-2xl font-bold text-blue-500 mb-2">
@@ -60,7 +67,7 @@ const OnboardingScreen = ({ navigation }: any) => {
             className="w-12 h-12 bg-white border border-primary rounded-md justify-center items-center"
             onPress={handlePrev}
           >
-            <ChevronLeft className="text-primary" />
+            <ChevronLeft color="#2563eb" size={24} />
           </TouchableOpacity>
         ) : (
           <View className="w-12 h-12" />
@@ -84,7 +91,7 @@ const OnboardingScreen = ({ navigation }: any) => {
             className="w-12 h-12 bg-primary rounded-md justify-center items-center"
             onPress={handleNext}
           >
-            <ChevronRight className="text-white" />
+            <ChevronRight color="white" size={24} />
           </TouchableOpacity>
         ) : (
           <View className="w-12 h-12" />
@@ -93,7 +100,7 @@ const OnboardingScreen = ({ navigation }: any) => {
 
       {/* Tombol Get Started */}
       {currentPage === 2 && (
-        <View className="absolute bottom-[200px]">
+        <View className="mt-6">
           <TouchableOpacity
             className="w-72 h-12 bg-primary rounded-lg justify-center items-center"
             onPress={handleGetStarted}

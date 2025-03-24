@@ -22,7 +22,8 @@
       }
     },
     "web": {
-      "favicon": "./src/assets/image/Logo-lima.png"
+      "favicon": "./src/assets/image/Logo-lima.png",
+      "bundler": "metro"
     }
   }
 }
