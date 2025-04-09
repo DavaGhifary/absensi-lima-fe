@@ -15,6 +15,8 @@ import {
 } from "lucide-react-native";
 import { TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faImage } from "@fortawesome/free-solid-svg-icons";
 
 const Beranda = () => {
   const navigation = useNavigation();
@@ -37,7 +39,7 @@ const Beranda = () => {
         <View className="bg-blue-600 w-full p-4 rounded-lg mt-4">
           <Text className="text-white font-bold">Jangan Lupa Untuk Absen!</Text>
           <View className="w-80">
-            <Text className="text-white text-sm mt-2 w-40">
+            <Text className="text-white text-sm mt-2 w-[200px]">
               Masa depanmu bergantung pada kebiasaan baik yang kamu mulai hari
               ini.
             </Text>
@@ -56,12 +58,15 @@ const Beranda = () => {
             </View>
             <Text className="mt-2 text-sm text-center w-16">Absen</Text>
           </TouchableOpacity>
-          <View className="items-center">
+          <TouchableOpacity
+            onPress={() => navigation.navigate("RiwayatAbsen")}
+            className="items-center"
+          >
             <View className="bg-[#FFE4CA] p-3 rounded-lg shadow-md">
               <ClipboardList className="text-[#FEB268]" size={32} />
             </View>
             <Text className="mt-2 text-sm text-center w-16">Riwayat Absen</Text>
-          </View>
+          </TouchableOpacity>
           <TouchableOpacity
             onPress={() => navigation.navigate("Ajukan")}
             className="items-center"
@@ -73,30 +78,36 @@ const Beranda = () => {
               Ajukan Izin/Sakit
             </Text>
           </TouchableOpacity>
-          <View className="items-center">
+          <TouchableOpacity
+            onPress={() => navigation.navigate("JadwalSemua")}
+            className="items-center"
+          >
             <View className="bg-[#CACCFF] p-3 rounded-lg shadow-md">
               <Calendar className="text-[#7175F2]" size={32} />
             </View>
             <Text className="mt-2 text-sm text-center w-16">Jadwal Mapel</Text>
-          </View>
-          <View className="items-center">
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("KontakGuru")} className="items-center">
             <View className="bg-[#FFE4CA] p-3 rounded-lg shadow-md">
               <Phone className="text-[#FEB268]" size={32} />
             </View>
             <Text className="mt-2 text-sm text-center w-16">Kontak Guru</Text>
-          </View>
-          <View className="items-center">
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("Pengumuman")} className="items-center">
             <View className="bg-[#CCF4DD] p-3 rounded-lg shadow-md">
               <Megaphone className="text-[#69E09C]" size={32} />
             </View>
             <Text className="mt-2 text-sm text-center w-16">Pengumuman</Text>
-          </View>
-          <View className="items-center">
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("AlbumFotoSemua")}
+            className="items-center"
+          >
             <View className="bg-[#CACCFF] p-3 rounded-lg shadow-md">
-              <SquarePen className="text-[#7175F2]" size={32} />
+              <FontAwesomeIcon icon={faImage} color="#7175F2" size={32} />
             </View>
-            <Text className="mt-2 text-sm text-center w-16">To - Do list</Text>
-          </View>
+            <Text className="mt-2 text-sm text-center w-16">Album Foto</Text>
+          </TouchableOpacity>
           <View className="items-center">
             <View className="bg-[#FFD3D1] p-3 rounded-lg shadow-md">
               <CircleHelp className="text-[#EC615A]" size={32} />
@@ -114,7 +125,10 @@ const Beranda = () => {
             </TouchableOpacity>
           </View>
           <View className="bg-blue-600 p-4 rounded-lg mt-2">
+            <View className="flex-row justify-between">
             <Text className="text-white">Rabu, 24 Januari 2025</Text>
+            <Text className="text-white">08:05 WIB</Text>
+            </View>
             <Text className="text-white font-bold text-xl">
               Matematika - RC 2.5
             </Text>
@@ -123,7 +137,7 @@ const Beranda = () => {
         </View>
 
         {/* Announcements */}
-        <View className="mt-6 mb-8">
+        <View className="mt-6 mb-24">
           <View className="flex-row justify-between items-center">
             <Text className="text-lg font-bold">Pengumuman</Text>
             <TouchableOpacity>

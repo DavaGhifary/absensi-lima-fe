@@ -1,16 +1,40 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import { Mail, Lock, Eye, EyeOff, ChevronLeft } from "lucide-react-native";
+import { api } from "../services/api";
 
 const LoginScreen = ({ navigation }: any) => {
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleDaftar = () => {
     navigation.navigate("Daftar");
   };
-  const handleMasuk = () => {
-    navigation.navigate("Beranda");
+
+  const handleMasuk = async () => {
+    setLoading(true);
+    try {
+      const response = await api.post("/login", {
+        email: email,
+        password: password,
+      });
+
+      const data = response.data;
+
+      Alert.alert("Berhasil", "Login berhasil!");
+      // Simpan token/data user di AsyncStorage jika perlu
+      navigation.navigate("Beranda");
+    } catch (error: any) {
+      if (error.response && error.response.data && error.response.data.message) {
+        Alert.alert("Login Gagal", error.response.data.message);
+      } else {
+        Alert.alert("Login Gagal", "Email atau password salah.");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleLupaKataSandi = () => {
@@ -38,7 +62,6 @@ const LoginScreen = ({ navigation }: any) => {
 
         {/* Form */}
         <View className="mt-8">
-
           {/* Input Email */}
           <View className="mb-2">
             <Text className="text-gray-600 mb-1">Alamat Email</Text>
@@ -46,6 +69,10 @@ const LoginScreen = ({ navigation }: any) => {
               placeholder="Masukkan Email"
               placeholderTextColor="#A0A0A0"
               className="bg-gray-100 rounded-md px-4 py-3 text-black"
+              value={email}
+              onChangeText={(text) => setEmail(text)}
+              keyboardType="email-address"
+              autoCapitalize="none"
             />
           </View>
 
@@ -75,16 +102,32 @@ const LoginScreen = ({ navigation }: any) => {
           </View>
 
           <View>
-            <Text className="text-right text-primary font-bold" onPress={handleLupaKataSandi}>Lupa Kata Sandi?</Text>
+            <Text
+              className="text-right text-primary font-bold"
+              onPress={handleLupaKataSandi}
+            >
+              Lupa Kata Sandi?
+            </Text>
           </View>
 
-          {/* Tombol Daftar */}
-          <TouchableOpacity className="bg-primary rounded-md py-2 items-center mt-4" onPress={handleMasuk}>
-            <Text className="text-white font-bold text-lg">Masuk</Text>
+          {/* Tombol Masuk */}
+          <TouchableOpacity
+            className="bg-primary rounded-md py-2 items-center mt-4"
+            onPress={handleMasuk}
+            disabled={loading}
+          >
+            <Text className="text-white font-bold text-lg">
+              {loading ? "Memproses..." : "Masuk"}
+            </Text>
           </TouchableOpacity>
 
           <View className="items-center mt-2">
-            <Text>Tidak memiliki akun? <Text className="text-primary font-bold" onPress={handleDaftar}>Daftar Sekarang</Text></Text>
+            <Text>
+              Tidak memiliki akun?{" "}
+              <Text className="text-primary font-bold" onPress={handleDaftar}>
+                Daftar Sekarang
+              </Text>
+            </Text>
           </View>
         </View>
       </View>

@@ -11,10 +11,6 @@ const Checkbox = ({ checked, onPress }:any) => {
       >
         {checked && <Check size={16} color="white" />}
       </View>
-      <Text className="text-gray-500 text-xs mt-2 w-56">
-        Dengan mendaftar, Anda menyetujui 
-        <Text className="text-primary"> Syarat & Ketentuan</Text>
-      </Text>
     </Pressable>
   );
 };

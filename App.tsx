@@ -10,21 +10,129 @@ import BottomNavbar from "./src/components/Navbar/BottomNavbar";
 import Absen from "./src/screens/Absen";
 import AjukanSakitIzin from "./src/screens/Ajukan/AjukanSakitIzin";
 import ResultAjukan from "./src/screens/Ajukan/ResultAjukan";
+import JadwalSemua from "./src/screens/Jadwal/JadwalSemua";
+import LihatSemuaJadwalKelas from "./src/screens/Jadwal/LihatSemuaJadwalKelas";
+import AbsenMaps from "./src/screens/Absen/AbsenMaps";
+import AbsenSend from "./src/screens/Absen/AbsenSend";
+import AbsenResult from "./src/screens/Absen/AbsenResult";
+import RiwayatAbsen from "./src/screens/Riwayat/RiwayatAbsen";
+import AlbumFotoSemua from "./src/screens/AlbumFoto/AlbumFotoSemua";
+import AlbumDetail from "./src/screens/AlbumFoto/AlbumDetail";
+import Pengumuman from "./src/screens/Pengumuman/Pengumuman";
+import KontakGuru from "./src/screens/KontakGuru/KontakGuru";
+import KontakDetail from "./src/screens/KontakGuru/KontakDetail";
+import PengumumanDetail from "./src/screens/Pengumuman/PengumumanDetail";
 const Stack = createStackNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Onboarding">
-        <Stack.Screen name="Onboarding" component={OnboardingScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Masuk" component={LoginScreens} options={{ headerShown: false }} />
-        <Stack.Screen name="LupaKataSandi" component={LupaKataSandi} options={{ headerShown: false }} />
-        <Stack.Screen name="Daftar" component={Daftar} options={{ headerShown: false }} />
-        <Stack.Screen name="AwalScreen" component={AwalScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Beranda" component={BottomNavbar} options={{ headerShown: false }} />
-        <Stack.Screen name="Absen" component={Absen} options={{ headerShown: false }} />
-        <Stack.Screen name="Ajukan" component={AjukanSakitIzin} options={{ headerShown: false }} />
-        <Stack.Screen name="ResultAjukan" component={ResultAjukan} options={{ headerShown: false }} />
+        <Stack.Screen
+          name="Onboarding"
+          component={OnboardingScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Masuk"
+          component={LoginScreens}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="LupaKataSandi"
+          component={LupaKataSandi}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Daftar"
+          component={Daftar}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="AwalScreen"
+          component={AwalScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Beranda"
+          component={BottomNavbar}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Absen"
+          component={Absen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Ajukan"
+          component={AjukanSakitIzin}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ResultAjukan"
+          component={ResultAjukan}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="JadwalSemua"
+          component={JadwalSemua}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="LihatSemuaJadwalKelas"
+          component={LihatSemuaJadwalKelas}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="AbsenMaps"
+          component={AbsenMaps}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="AbsenSend"
+          component={AbsenSend}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="AbsenResult"
+          component={AbsenResult}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="RiwayatAbsen"
+          component={RiwayatAbsen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="AlbumFotoSemua"
+          component={AlbumFotoSemua}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="AlbumDetail"
+          component={AlbumDetail}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Pengumuman"
+          component={Pengumuman}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="PengumumanDetail"
+          component={PengumumanDetail}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="KontakGuru"
+          component={KontakGuru}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="KontakDetail"
+          component={KontakDetail}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
