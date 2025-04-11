@@ -22,6 +22,13 @@ import Pengumuman from "./src/screens/Pengumuman/Pengumuman";
 import KontakGuru from "./src/screens/KontakGuru/KontakGuru";
 import KontakDetail from "./src/screens/KontakGuru/KontakDetail";
 import PengumumanDetail from "./src/screens/Pengumuman/PengumumanDetail";
+import JadwalMapel from "./src/screens/Jadwal/JadwalMapel";
+import BarangHilang from "./src/screens/BarangHilang/BarangHilang";
+import DetailAkun from "./src/screens/Profil/DetailAkun";
+import BerandaAdmin from "./src/screens/Admin/BerandaAdmin";
+import AkunSiswa from "./src/screens/Admin/DataSiswa/AkunSiswa";
+import RekapAbsen from "./src/screens/Admin/RekapAbsen/RekapAbsen";
+import KonfirmasiIzinSakit from "./src/screens/Admin/KonfirmasiIzinSakit/KonfirmasiIzinSakit";
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -84,6 +91,11 @@ const App = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
+          name="JadwalMapel"
+          component={JadwalMapel}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
           name="AbsenMaps"
           component={AbsenMaps}
           options={{ headerShown: false }}
@@ -131,6 +143,36 @@ const App = () => {
         <Stack.Screen
           name="KontakDetail"
           component={KontakDetail}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="BarangHilang"
+          component={BarangHilang}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DetailAkun"
+          component={DetailAkun}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="BerandaAdmin"
+          component={BerandaAdmin}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="AkunSiswa"
+          component={AkunSiswa}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="RekapAbsen"
+          component={RekapAbsen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="KonfirmasiIzinSakit"
+          component={KonfirmasiIzinSakit}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

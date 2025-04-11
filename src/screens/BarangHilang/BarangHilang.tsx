@@ -1,0 +1,47 @@
+import { faQuestion } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { ChevronLeft, MapPin } from "lucide-react-native";
+import React from "react";
+import { View, Text, TouchableOpacity } from "react-native";
+
+const BarangHilang = ({ navigation }: any) => {
+  return (
+    <View className="flex-1 bg-primary">
+          <View className="h-48">
+            <View className="flex-1 flex-row items-center justify-between px-14">
+              <ChevronLeft
+                className="text-white"
+                onPress={() => navigation.goBack()}
+              />
+              <Text className="text-xl text-white font-bold">Barang Hilang</Text>
+              <Text className="w-6" />
+            </View>
+          </View>
+          <View className="flex-1 bg-white rounded-t-2xl px-14">
+            <View className="flex items-center mt-32 mb-10">
+              <View
+                className="w-40 h-40 p-4 rounded-full"
+                style={{ backgroundColor: "rgba(32, 97, 220, 0.2)" }}
+              >
+                <View className="bg-[#2061DC] w-32 h-32 rounded-full flex justify-center items-center p-3">
+                  <FontAwesomeIcon icon={faQuestion} color="white" size={64} />
+                </View>
+              </View>
+            </View>
+            <View className="mt-6">
+              <Text className="text-base text-center font-bold">
+                Nemu barang? Jangan dikantongin, laporin di sini!
+              </Text>
+            </View>
+    
+            <TouchableOpacity
+              className="bg-primary rounded-lg p-4 mt-5"
+            >
+              <Text className="text-center text-white">Klik di sini Kalau Nemuin Barang!</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+  )
+}
+
+export default BarangHilang

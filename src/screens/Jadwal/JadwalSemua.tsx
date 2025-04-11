@@ -24,146 +24,150 @@ const data = [
   {
     id: "1",
     title: "XIII KA 1",
-    category: "XIII",
+    category: 13,
     color: "#EC615A",
     icon: faFlask,
   },
   {
     id: "2",
     title: "XIII KA 2",
-    category: "XIII",
+    category: 13,
     color: "#EC615A",
     icon: faFlask,
   },
   {
     id: "3",
     title: "XII TKJ 1",
-    category: "XII",
+    category: 12,
     color: "#FEB268",
     icon: faDesktop,
   },
   {
     id: "4",
     title: "XII TKJ 2",
-    category: "XII",
+    category: 12,
     color: "#FEB268",
     icon: faDesktop,
   },
   {
     id: "5",
     title: "XII TKJ 3",
-    category: "XII",
+    category: 12,
     color: "#FEB268",
     icon: faDesktop,
   },
   {
     id: "6",
     title: "XII DPIB 1",
-    category: "XII",
+    category: 12,
     color: "#2061DC",
     icon: faBuilding,
   },
   {
     id: "7",
     title: "XII DPIB 2",
-    category: "XII",
+    category: 12,
     color: "#2061DC",
     icon: faBuilding,
   },
   {
     id: "8",
     title: "XI TKJ 1",
-    category: "XI",
+    category: 11,
     color: "#FEB268",
     icon: faDesktop,
   },
   {
     id: "9",
     title: "XI TKJ 2",
-    category: "XI",
+    category: 11,
     color: "#FEB268",
     icon: faDesktop,
   },
   {
     id: "10",
     title: "XI TKJ 3",
-    category: "XI",
+    category: 11,
     color: "#FEB268",
     icon: faDesktop,
   },
   {
     id: "11",
     title: "XI DPIB 1",
-    category: "XI",
+    category: 11,
     color: "#2061DC",
     icon: faBuilding,
   },
   {
     id: "12",
     title: "XI DPIB 2",
-    category: "XI",
+    category: 11,
     color: "#2061DC",
     icon: faBuilding,
   },
   {
     id: "13",
     title: "XI DPIB 3",
-    category: "XI",
+    category: 11,
     color: "#2061DC",
     icon: faBuilding,
   },
   {
     id: "14",
     title: "XI DPIB 5",
-    category: "XI",
+    category: 11,
     color: "#2061DC",
     icon: faBuilding,
   },
   {
     id: "15",
     title: "X TKJ 1",
-    category: "X",
+    category: 10,
     color: "#FEB268",
     icon: faBuilding,
   },
   {
     id: "16",
     title: "X TKJ 2",
-    category: "X",
+    category: 10,
     color: "#FEB268",
     icon: faBuilding,
   },
   {
     id: "17",
     title: "X TKJ 3",
-    category: "X",
+    category: 10,
     color: "#FEB268",
     icon: faBuilding,
   },
   {
     id: "18",
     title: "X DPIB 1",
-    category: "X",
+    category: 10,
     color: "#2061DC",
     icon: faBuilding,
   },
   {
     id: "19",
     title: "X DPIB 2",
-    category: "X",
+    category: 10,
     color: "#2061DC",
     icon: faBuilding,
   },
   {
     id: "20",
     title: "X DPIB 3",
-    category: "X",
+    category: 10,
     color: "#2061DC",
     icon: faBuilding,
   },
 ];
 
-const Card = ({ item }: { item: { title: string; color: string; icon: any } }) => (
+const Card = ({
+  item,
+}: {
+  item: { title: string; color: string; icon: any };
+}) => (
   <StyledView>
     <StyledView
       className="w-14 h-14 rounded-lg flex items-center justify-center mx-1"
@@ -177,16 +181,14 @@ const Card = ({ item }: { item: { title: string; color: string; icon: any } }) =
   </StyledView>
 );
 
-const renderSection = (
-  title: string,
-  category: string,
-  navigation: any
-) => (
+const renderSection = (title: string, category: number, navigation: any) => (
   <StyledView>
     <StyledView className="flex-row items-center justify-between mt-4">
       <StyledText className="text-lg font-bold">{title}</StyledText>
       <TouchableOpacity
-        onPress={() => navigation.navigate("LihatSemuaJadwalKelas", { category })}
+        onPress={() =>
+          navigation.navigate("LihatSemuaJadwalKelas", { category })
+        }
       >
         <StyledText className="text-blue-500 text-sm font-semibold">
           Lihat Semua
@@ -234,10 +236,10 @@ const JadwalSemua = () => {
         </StyledView>
 
         {/* Kategori Kelas */}
-        {renderSection("Kelas 13", "XIII", navigation)}
-        {renderSection("Kelas 12", "XII", navigation)}
-        {renderSection("Kelas 11", "XI", navigation)}
-        {renderSection("Kelas 10", "X", navigation)}
+        {renderSection("Kelas 13", 13, navigation)}
+        {renderSection("Kelas 12", 12, navigation)}
+        {renderSection("Kelas 11", 11, navigation)}
+        {renderSection("Kelas 10", 10, navigation)}
       </StyledView>
     </StyledView>
   );

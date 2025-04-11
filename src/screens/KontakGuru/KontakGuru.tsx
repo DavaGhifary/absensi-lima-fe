@@ -13,26 +13,50 @@ const DATA = [
   {
     title: "A",
     data: [
-      { id: 1, name: "Abdul Manaf", kode: "01", mapel: "Olahraga", phone: "6281234567890" },
+      {
+        id: 1,
+        name: "Abdul Hadi",
+        kode: "01",
+        mapel: "Olahraga",
+        phone: "6281234567890",
+      },
     ],
   },
   {
     title: "B",
     data: [
-      { id: 1, name: "Bambang", kode: "02", mapel: "Kejuruan TKJ", phone: "6281234567891" },
-      { id: 2, name: "Bambang 2", kode: "02", mapel: "Kejuruan TKJ", phone: "6281234567891" },
+      {
+        id: 1,
+        name: "Bambang Sukamto",
+        kode: "02",
+        mapel: "Kejuruan TKJ",
+        phone: "6281234567891",
+      },
+      {
+        id: 2,
+        name: "Bambang Sukamto",
+        kode: "02",
+        mapel: "Kejuruan TKJ",
+        phone: "6281234567891",
+      },
     ],
   },
   {
-    title: "C",
+    title: "L",
     data: [
-      { id: 3, name: "Cecep", kode: "03", mapel: "BK", phone: "6281234567892" },
+      { id: 3, name: "Legiyanto Spd", kode: "03", mapel: "BK", phone: "6281234567892" },
     ],
   },
   {
     title: "D",
     data: [
-      { id: 1, name: "Dava", kode: "03", mapel: "BK", phone: "6281234567892" },
+      {
+        id: 1,
+        name: "",
+        kode: "03",
+        mapel: "BK",
+        phone: "6281234567892",
+      },
     ],
   },
   // Tambah lainnya sesuai kebutuhan
@@ -88,7 +112,9 @@ const KontakGuru = ({ navigation }: any) => {
           renderItem={({ item }) => (
             <TouchableOpacity
               className="flex-row items-center space-x-3 py-2"
-              onPress={() => navigation.navigate("KontakDetail", { guru: item })}
+              onPress={() =>
+                navigation.navigate("KontakDetail", { guru: item })
+              }
             >
               <View className="w-10 h-10 rounded-full bg-gray-200 justify-center items-center">
                 <Text className="text-base">👤</Text>
@@ -100,7 +126,9 @@ const KontakGuru = ({ navigation }: any) => {
             </TouchableOpacity>
           )}
           renderSectionHeader={({ section: { title } }) => (
-            <Text className="text-blue-500 font-bold text-sm mt-4">{title}</Text>
+            <Text className="text-blue-500 font-bold text-sm mt-4">
+              {title}
+            </Text>
           )}
           showsVerticalScrollIndicator={false}
         />
@@ -128,7 +156,10 @@ const KontakGuru = ({ navigation }: any) => {
         <View className="absolute right-4 top-5 bottom-0 justify-center items-center">
           <ScrollView contentContainerStyle={{ alignItems: "center" }}>
             {ALPHABETS.map((letter) => (
-              <TouchableOpacity key={letter} onPress={() => scrollToSection(letter)}>
+              <TouchableOpacity
+                key={letter}
+                onPress={() => scrollToSection(letter)}
+              >
                 <Text className="text-xs text-gray-400 py-1">{letter}</Text>
               </TouchableOpacity>
             ))}
