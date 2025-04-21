@@ -13,13 +13,13 @@ const data = [
     date: "Sen - 3 Maret 2025",
     time: "6:20 AM",
     status: "Tepat Waktu",
-    type: "Masuk",
+    type: "Hadir",
   },
   {
     date: "Sel - 4 Maret 2025",
     time: "7:05 AM",
     status: "Terlambat",
-    type: "Masuk",
+    type: "Hadir",
   },
   {
     date: "Rab - 5 Maret 2025",
@@ -40,7 +40,7 @@ const data = [
     date: "Sen - 10 Maret 2025",
     time: "6:20 AM",
     status: "Tepat Waktu",
-    type: "Masuk",
+    type: "Hadir",
   },
 ];
 
@@ -53,7 +53,7 @@ const getStatusColor = (status: string) => {
 };
 
 const getIconByType = (type: string) => {
-  if (type === "Masuk")
+  if (type === "Hadir")
     return { icon: faArrowUpRightFromSquare, bg: "#DBEAFE", color: "#3B82F6" }; // biru muda dan biru
   if (type === "Izin")
     return { icon: faArrowUpRightFromSquare, bg: "#DBEAFE", color: "#3B82F6" };
@@ -76,7 +76,7 @@ const MONTHS = [
 ];
 
 const RiwayatAbsen = ({ navigation }: any) => {
-  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth()); // 0-indexed
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [showMonthPicker, setShowMonthPicker] = useState(false);
 

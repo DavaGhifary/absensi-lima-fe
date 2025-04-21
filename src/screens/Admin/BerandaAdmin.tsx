@@ -28,7 +28,7 @@ const BerandaAdmin = () => {
         <View className="flex-row justify-between items-center">
           <View>
             <Text className="text-lg font-bold">Hallo,</Text>
-            <Text className="text-2xl font-bold">Budiono Siregar.</Text>
+            <Text className="text-2xl font-bold">Admin</Text>
           </View>
           <TouchableOpacity>
             <Bell className="text-black" size={24} />

@@ -1,10 +1,9 @@
 import {
-  Calendar,
   ChevronDown,
   ChevronLeft,
   Upload,
 } from "lucide-react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -12,11 +11,13 @@ import {
   Modal,
   FlatList,
   TouchableWithoutFeedback,
-  Image,
+  TextInput,
+  ActivityIndicator,
+  Alert,
 } from "react-native";
-import { TextInput } from "react-native-gesture-handler";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as ImagePicker from "expo-image-picker";
+import * as Location from "expo-location";
+import { ajukanIzinSakit } from "../../services/api";
 
 const options = [
   { label: "Sakit", value: "Sakit" },
@@ -24,12 +25,31 @@ const options = [
 ];
 
 const AjukanSakitIzin = ({ navigation }: any) => {
-  const [selectedValue, setSelectedValue] = useState<string>("");
+  const [selectedValue, setSelectedValue] = useState<"Sakit" | "Izin" | "">('');
   const [modalVisible, setModalVisible] = useState(false);
-  const [date, setDate] = useState(new Date());
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [isDateSelected, setIsDateSelected] = useState(false);
+  const [fileUri, setFileUri] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
+  const [keterangan, setKeterangan] = useState<string>("");
+  const [loading, setLoading] = useState(false);
+  const [latitude, setLatitude] = useState<number | undefined>(undefined);
+  const [longitude, setLongitude] = useState<number | undefined>(undefined);
+  const [isKeteranganValid, setIsKeteranganValid] = useState(true);
+  const [isFileValid, setIsFileValid] = useState(true);
+
+  // Dapatkan lokasi saat komponen pertama kali dimuat
+  useEffect(() => {
+    (async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Izin lokasi ditolak', 'Aplikasi membutuhkan akses lokasi untuk mengajukan izin/sakit.');
+        return;
+      }
+
+      const location = await Location.getCurrentPositionAsync({});
+      setLatitude(location.coords.latitude);
+      setLongitude(location.coords.longitude);
+    })();
+  }, []);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -38,26 +58,58 @@ const AjukanSakitIzin = ({ navigation }: any) => {
     });
 
     if (!result.canceled) {
-      const uri = result.assets[0].uri;
-
-      // Ekstrak nama file dari URI
-      const name = uri.split("/").pop(); // Ambil nama file dari URI
-      setFileName(name || "gambar_tanpa_nama.jpg");
+      const asset = result.assets[0];
+      setFileUri(asset.uri);
+      setFileName(asset.uri.split("/").pop() || "gambar.jpg");
     }
   };
 
-  const showDatePicker = () => setDatePickerVisibility(true);
-  const hideDatePicker = () => setDatePickerVisibility(false);
+  const handleKirim = async () => {
+    let valid = true;
 
-  const handleConfirm = (selectedDate: Date) => {
-    setDate(selectedDate);
-    setIsDateSelected(true);
-    hideDatePicker();
-  };
+    // Validasi Keterangan
+    if (!keterangan) {
+      setIsKeteranganValid(false);
+      valid = false;
+    }
 
-  const handleKirim = () => {
-    navigation.navigate("ResultAjukan");
-  };
+    // Validasi File (Hanya untuk "Sakit")
+    if (selectedValue === "Sakit" && !fileUri) {
+      setIsFileValid(false);
+      valid = false;
+    }
+
+    if (!selectedValue) {
+      alert("Silakan pilih jenis pengajuan terlebih dahulu.");
+      return;
+    }
+
+    if (!valid) {
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await ajukanIzinSakit({
+        jenis: selectedValue,
+        keterangan,
+        surat_sakit: fileUri || undefined,
+        latitude,
+        longitude,
+      });
+
+      setLoading(false);
+      navigation.navigate("ResultAjukan");
+    } catch (error: any) {
+      setLoading(false);
+
+      const errorMessage =
+        error?.response?.data?.message ||
+        "Terjadi kesalahan saat mengirim pengajuan.";
+
+      navigation.navigate("ResultAbsenError", { message: errorMessage });
+    }
+  }
 
   return (
     <View className="flex-1 bg-primary">
@@ -82,18 +134,13 @@ const AjukanSakitIzin = ({ navigation }: any) => {
             onPress={() => setModalVisible(true)}
             className="flex-row items-center justify-between border border-gray-300 rounded-lg bg-white px-4 py-3"
           >
-            <Text
-              className={`text-base ${
-                selectedValue ? "text-gray-400" : "text-gray-400"
-              }`}
-            >
+            <Text className="text-base text-gray-400">
               {options.find((opt) => opt.value === selectedValue)?.label ||
                 "Pilih jenis pengajuan"}
             </Text>
             <ChevronDown className="text-gray-300" />
           </TouchableOpacity>
 
-          {/* Modal Pilihan */}
           <Modal visible={modalVisible} transparent animationType="fade">
             <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
               <View className="flex-1 justify-center items-center bg-black/50">
@@ -106,7 +153,7 @@ const AjukanSakitIzin = ({ navigation }: any) => {
                         <TouchableOpacity
                           className="py-2"
                           onPress={() => {
-                            setSelectedValue(item.value);
+                            setSelectedValue(item.value as "Sakit" | "Izin");
                             setModalVisible(false);
                           }}
                         >
@@ -123,60 +170,56 @@ const AjukanSakitIzin = ({ navigation }: any) => {
           </Modal>
         </View>
 
-        <View className="w-full mb-2">
-          <Text className="font-semibold text-md text-black mb-1">Tanggal</Text>
-          <TouchableOpacity
-            onPress={showDatePicker}
-            className="flex-row items-center justify-between border border-gray-300 rounded-md px-3 py-3"
-          >
-            <Text
-              className={`text-base ${
-                date ? "text-gray-400" : "text-gray-400"
-              }`}
-            >
-              {isDateSelected ? date?.toDateString() : "Pilih Tanggal"}
-            </Text>
-            <Calendar className="text-gray-400" />
-          </TouchableOpacity>
-
-          <DateTimePickerModal
-            isVisible={isDatePickerVisible}
-            mode="date"
-            onConfirm={handleConfirm}
-            onCancel={hideDatePicker}
-          />
-        </View>
-
-        <View className="w-full mb-2">
-          <Text className="font-semibold text-black mb-1">Keterangan</Text>
-          <TextInput
-            placeholder="Masukkan keterangan..."
-            multiline
-            numberOfLines={4}
-            className="border border-gray-300 rounded-md px-3 pb-8 text-gray-400 text-base"
-          />
-        </View>
-
-        <View className="w-full mb-2">
-          <Text className="font-semibold text-black mb-1">Unggah bukti</Text>
-
-          {/* Input untuk menampilkan nama gambar */}
-          <View className="relative">
+        {/* Keterangan */}
+        {selectedValue !== "" && (
+          <View className="w-full mb-2">
+            <Text className="font-semibold text-black mb-1">Keterangan</Text>
             <TextInput
-              value={fileName || ""}
-              editable={false}
-              className="h-12 border border-gray-300 rounded-md pl-12 py-3 text-black"
+              placeholder="Masukkan keterangan..."
+              multiline
+              numberOfLines={4}
+              value={keterangan}
+              onChangeText={setKeterangan}
+              className={`border ${isKeteranganValid ? 'border-gray-300' : 'border-red-500'} rounded-md px-3 pb-8 text-gray-400 text-base`}
             />
-            <Upload
-              onPress={pickImage}
-              className="text-gray-400 absolute top-3 left-4"
-            />
+            {!isKeteranganValid && (
+              <Text className="text-red-500 text-sm mt-1">*Keterangan harus diisi</Text>
+            )}
           </View>
-        </View>
+        )}
 
-        {/* Tombol Izinkan Lokasi */}
-        <TouchableOpacity onPress={handleKirim} className="bg-primary rounded-lg p-4 mt-5">
-          <Text className="text-center text-white">Kirim</Text>
+        {/* Bukti hanya untuk Sakit */}
+        {selectedValue === "Sakit" && (
+          <View className="w-full mb-2">
+            <Text className="font-semibold text-black mb-1">Unggah bukti</Text>
+            <View className="relative">
+              <TextInput
+                value={fileName || ""}
+                editable={false}
+                className={`h-12 border ${isFileValid ? 'border-gray-300' : 'border-red-500'} rounded-md pl-12 py-3 text-black`}
+              />
+              <Upload
+                onPress={pickImage}
+                className="text-gray-400 absolute top-3 left-4"
+              />
+            </View>
+            {!isFileValid && (
+              <Text className="text-red-500 text-sm mt-1">*Bukti surat sakit harus diunggah</Text>
+            )}
+          </View>
+        )}
+
+        {/* Tombol Kirim */}
+        <TouchableOpacity
+          onPress={handleKirim}
+          className="bg-primary rounded-lg p-4 mt-5 flex-row items-center justify-center"
+          disabled={loading}
+        >
+          {loading ? (
+            <ActivityIndicator color="white" />
+          ) : (
+            <Text className="text-center text-white">Kirim</Text>
+          )}
         </TouchableOpacity>
       </View>
     </View>

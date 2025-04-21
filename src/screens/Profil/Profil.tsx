@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, ScrollView, Modal } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, Modal, Alert } from "react-native";
 import {
   User,
   Lock,
@@ -13,23 +13,30 @@ import {
   Power,
 } from "lucide-react-native";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { logoutUser } from "../../services/api";
+import { CommonActions } from '@react-navigation/native';
 
 const Profil = () => {
   const navigation = useNavigation();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
-  const handleLogout = () => {
-    // Logika logout: bisa hapus token, reset user context, dll.
-    console.log("User logged out");
-
-    // // Contoh: redirect ke halaman login
-    // navigation.reset({
-    //   index: 0,
-    //   routes: [{ name: "Login" }],
-    // });
-
-    setShowLogoutModal(false);
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem("auth_token");
+      await AsyncStorage.removeItem("user");
+  
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: 'Masuk' }], 
+        })
+      );
+    } catch (error) {
+      // console.log("Gagal logout:", error);
+    }
   };
+  
 
   return (
     <View className="flex-1 bg-primary">

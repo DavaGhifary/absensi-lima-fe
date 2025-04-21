@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
-import { Mail, Lock, Eye, EyeOff, ChevronLeft } from "lucide-react-native";
+import { Eye, EyeOff, ChevronLeft } from "lucide-react-native";
 import { api } from "../services/api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AxiosError } from "axios";
 
 const LoginScreen = ({ navigation }: any) => {
   const [email, setEmail] = useState("");
@@ -9,12 +11,20 @@ const LoginScreen = ({ navigation }: any) => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const [errors, setErrors] = useState<{
+    email?: string;
+    password?: string;
+    general?: string;
+  }>({});
+
   const handleDaftar = () => {
     navigation.navigate("Daftar");
   };
 
   const handleMasuk = async () => {
     setLoading(true);
+    setErrors({});
+
     try {
       const response = await api.post("/login", {
         email: email,
@@ -23,14 +33,25 @@ const LoginScreen = ({ navigation }: any) => {
 
       const data = response.data;
 
-      Alert.alert("Berhasil", "Login berhasil!");
-      // Simpan token/data user di AsyncStorage jika perlu
+      await AsyncStorage.setItem("auth_token", data.token);
+      await AsyncStorage.setItem("user", JSON.stringify(data.user));
+
       navigation.navigate("Beranda");
-    } catch (error: any) {
-      if (error.response && error.response.data && error.response.data.message) {
-        Alert.alert("Login Gagal", error.response.data.message);
+    } catch (err) {
+      const error = err as AxiosError<any>;
+
+      if (
+        error.response?.data?.errors?.email?.[0] === "Email atau password salah." ||
+        error.response?.data?.message === "Email atau password salah."
+      ) {
+        setErrors({
+          email: "Email atau password salah.",
+          password: "Email atau password salah.",
+        });
+      } else if (error.response?.data?.errors) {
+        setErrors(error.response.data.errors);
       } else {
-        Alert.alert("Login Gagal", "Email atau password salah.");
+        setErrors({ general: "Terjadi kesalahan saat login." });
       }
     } finally {
       setLoading(false);
@@ -45,30 +66,27 @@ const LoginScreen = ({ navigation }: any) => {
     <View className="flex-1 bg-primary">
       <View className="h-48">
         <View className="flex-1 flex-row items-center justify-between px-14">
-          <ChevronLeft
-            className="text-white"
-            onPress={() => navigation.goBack()}
-          />
-          <Text className="text-xl text-white font-bold">Masuk</Text>
+          <ChevronLeft className="text-white" onPress={() => navigation.goBack()} />
+          <Text className="text-xl text-white font-bold">Login</Text>
           <Text className="w-6" />
         </View>
       </View>
+
       <View className="flex-1 bg-white rounded-t-2xl px-14">
-        {/* Header */}
         <View className="mt-6">
           <Text className="text-2xl font-bold">Masuk Sekarang!</Text>
           <Text className="text-gray-500">Masuk untuk mengakses fitur</Text>
         </View>
 
-        {/* Form */}
         <View className="mt-8">
           {/* Input Email */}
-          <View className="mb-2">
+          <View className="mb-4">
             <Text className="text-gray-600 mb-1">Alamat Email</Text>
             <TextInput
               placeholder="Masukkan Email"
               placeholderTextColor="#A0A0A0"
-              className="bg-gray-100 rounded-md px-4 py-3 text-black"
+              className={`bg-gray-100 rounded-md px-4 py-3 text-black ${errors.email ? "border border-red-500" : ""
+                }`}
               value={email}
               onChangeText={(text) => setEmail(text)}
               keyboardType="email-address"
@@ -77,11 +95,12 @@ const LoginScreen = ({ navigation }: any) => {
           </View>
 
           {/* Input Kata Sandi */}
-          <View className="mb-2">
+          <View className="mb-4">
             <Text className="text-gray-600 mb-1">Kata Sandi</Text>
             <View className="relative flex-row items-center">
               <TextInput
-                className="flex-1 text-black bg-gray-100 rounded-md px-4 py-3"
+                className={`flex-1 text-black bg-gray-100 rounded-md px-4 py-3 ${errors.password || errors.email ? "border border-red-500" : ""
+                  }`}
                 placeholder="Masukkan Kata Sandi"
                 placeholderTextColor="#A0A0A0"
                 secureTextEntry={!showPassword}
@@ -99,18 +118,15 @@ const LoginScreen = ({ navigation }: any) => {
                 )}
               </TouchableOpacity>
             </View>
+            {errors.password && <Text className="text-red-500 mt-1">{errors.password}</Text>}
           </View>
 
           <View>
-            <Text
-              className="text-right text-primary font-bold"
-              onPress={handleLupaKataSandi}
-            >
+            <Text className="text-right text-primary font-bold" onPress={handleLupaKataSandi}>
               Lupa Kata Sandi?
             </Text>
           </View>
 
-          {/* Tombol Masuk */}
           <TouchableOpacity
             className="bg-primary rounded-md py-2 items-center mt-4"
             onPress={handleMasuk}
@@ -121,14 +137,14 @@ const LoginScreen = ({ navigation }: any) => {
             </Text>
           </TouchableOpacity>
 
-          <View className="items-center mt-2">
+          {/* <View className="items-center mt-2">
             <Text>
               Tidak memiliki akun?{" "}
               <Text className="text-primary font-bold" onPress={handleDaftar}>
                 Daftar Sekarang
               </Text>
             </Text>
-          </View>
+          </View> */}
         </View>
       </View>
     </View>

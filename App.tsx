@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import OnboardingScreen from "./src/screens/onBoarding";
 import LoginScreens from "./src/screens/Masuk";
-import Daftar from "./src/screens/Daftar";
+// import Daftar from "./src/screens/Daftar";
 import AwalScreen from "./src/screens/AwalScreen";
 import LupaKataSandi from "./src/screens/LupaKataSandi";
 import BottomNavbar from "./src/components/Navbar/BottomNavbar";
@@ -29,12 +29,41 @@ import BerandaAdmin from "./src/screens/Admin/BerandaAdmin";
 import AkunSiswa from "./src/screens/Admin/DataSiswa/AkunSiswa";
 import RekapAbsen from "./src/screens/Admin/RekapAbsen/RekapAbsen";
 import KonfirmasiIzinSakit from "./src/screens/Admin/KonfirmasiIzinSakit/KonfirmasiIzinSakit";
+import ResultAbsenError from "./src/screens/Ajukan/ResultAbsenError";
 const Stack = createStackNavigator();
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 const App = () => {
+
+  const [isFirstLaunch, setIsFirstLaunch] = useState<null | boolean>(null);
+
+  useEffect(() => {
+    const checkFirstLaunch = async () => {
+      try {
+        const hasLaunched = await AsyncStorage.getItem("hasLaunched");
+        if (hasLaunched === null) {
+          // Pertama kali buka
+          await AsyncStorage.setItem("hasLaunched", "true");
+          setIsFirstLaunch(true);
+        } else {
+          setIsFirstLaunch(false);
+        }
+      } catch (error) {
+        setIsFirstLaunch(false);
+      }
+    };
+
+    checkFirstLaunch();
+  }, []);
+
+  if (isFirstLaunch === null) {
+    return null;
+  }
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Onboarding">
+      <Stack.Navigator initialRouteName={isFirstLaunch ? "Onboarding" : "Masuk"}>
         <Stack.Screen
           name="Onboarding"
           component={OnboardingScreen}
@@ -50,11 +79,11 @@ const App = () => {
           component={LupaKataSandi}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Daftar"
           component={Daftar}
           options={{ headerShown: false }}
-        />
+        /> */}
         <Stack.Screen
           name="AwalScreen"
           component={AwalScreen}
@@ -78,6 +107,11 @@ const App = () => {
         <Stack.Screen
           name="ResultAjukan"
           component={ResultAjukan}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ResultAbsenError"
+          component={ResultAbsenError}
           options={{ headerShown: false }}
         />
         <Stack.Screen

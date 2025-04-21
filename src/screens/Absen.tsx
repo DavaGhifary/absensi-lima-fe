@@ -1,8 +1,35 @@
 import { ChevronLeft, MapPin } from "lucide-react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
+import * as Location from "expo-location";
 
 const Absen = ({ navigation }: any) => {
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Location.getForegroundPermissionsAsync();
+      if (status === "granted") {
+        const isLocationEnabled = await Location.hasServicesEnabledAsync();
+        if (isLocationEnabled) {
+          const location = await Location.getCurrentPositionAsync({});
+          navigation.replace("AbsenMaps", { coords: location.coords });
+        }
+      }
+    })();
+  }, []);
+
+  const requestLocationPermission = async () => {
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      alert("Izin lokasi ditolak!");
+      return null;
+    }
+
+    const location = await Location.getCurrentPositionAsync({});
+    console.log("Lokasi kamu:", location.coords);
+    return location;
+  };
+
   return (
     <View className="flex-1 bg-primary">
       <View className="h-48">
@@ -38,10 +65,16 @@ const Absen = ({ navigation }: any) => {
 
         <TouchableOpacity
           className="bg-primary rounded-lg p-4 mt-5"
-          onPress={() => navigation.navigate("AbsenMaps")}
+          onPress={async () => {
+            const lokasi = await requestLocationPermission();
+            if (lokasi) {
+              navigation.navigate("AbsenMaps", { coords: lokasi.coords });
+            }
+          }}
         >
           <Text className="text-center text-white">Izinkan Akses Lokasi</Text>
         </TouchableOpacity>
+
       </View>
     </View>
   );

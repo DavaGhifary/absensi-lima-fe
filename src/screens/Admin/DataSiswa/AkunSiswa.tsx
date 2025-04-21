@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { ChevronLeft, Search, Plus } from "lucide-react-native";
 
-const dummyData = Array.from({ length: 1 }).map((_, index) => ({
+const dummyData = Array.from({ length: 5 }).map((_, index) => ({
   no: index + 1,
   nama: `Budiono Siregar ${index + 1}`,
   nis: "123456",

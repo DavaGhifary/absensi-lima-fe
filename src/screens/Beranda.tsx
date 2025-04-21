@@ -17,9 +17,31 @@ import { TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faImage } from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 const Beranda = () => {
   const navigation = useNavigation();
+
+  const [userName, setUserName] = useState("");
+
+useEffect(() => {
+  const getUser = async () => {
+    try {
+      const userData = await AsyncStorage.getItem("user");
+      if (userData) {
+        const user = JSON.parse(userData);
+        setUserName(user.userName || "Pengguna");
+      }
+    } catch (error) {
+      console.error("Gagal ambil data user:", error);
+    }
+  };
+
+  getUser();
+}, []);
+
 
   return (
     <View className="flex-1 bg-[#F9FAFC]">
@@ -28,7 +50,7 @@ const Beranda = () => {
         <View className="flex-row justify-between items-center">
           <View>
             <Text className="text-lg font-bold">Hallo,</Text>
-            <Text className="text-2xl font-bold">Budiono Siregar.</Text>
+            <Text className="text-2xl font-bold">{userName}</Text>
           </View>
           <TouchableOpacity>
             <Bell className="text-black" size={24} />
@@ -108,12 +130,12 @@ const Beranda = () => {
             </View>
             <Text className="mt-2 text-sm text-center w-16">Album Foto</Text>
           </TouchableOpacity>
-          <View className="items-center">
+          <TouchableOpacity onPress={() => navigation.navigate("BarangHilang")} className="items-center">
             <View className="bg-[#FFD3D1] p-3 rounded-lg shadow-md">
               <CircleHelp className="text-[#EC615A]" size={32} />
             </View>
             <Text className="mt-2 text-sm text-center w-16">Barang Hilang</Text>
-          </View>
+          </TouchableOpacity>
         </View>
 
         {/* Today's Schedule */}

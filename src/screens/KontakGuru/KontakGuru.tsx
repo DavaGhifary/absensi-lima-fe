@@ -10,31 +10,73 @@ import {
 import { ChevronLeft, Search } from "lucide-react-native";
 
 const DATA = [
+  
   {
-    title: "A",
+    title: "",
     data: [
       {
         id: 1,
-        name: "Abdul Hadi",
-        kode: "01",
-        mapel: "Olahraga",
-        phone: "6281234567890",
-      },
-    ],
-  },
-  {
-    title: "B",
-    data: [
-      {
-        id: 1,
-        name: "Bambang Sukamto",
+        name: "Bambang Sukamto M Kom",
         kode: "02",
         mapel: "Kejuruan TKJ",
         phone: "6281234567891",
       },
       {
         id: 2,
-        name: "Bambang Sukamto",
+        name: "Suherlan S.pd",
+        kode: "02",
+        mapel: "Bahasa Indonesia",
+        phone: "6281234567891",
+      },
+      {
+        id: 3,
+        name: "Maulana Firdaus Nurrokhim S.Pd ",
+        kode: "02",
+        mapel: "Kejuruan TKJ",
+        phone: "6281234567891",
+      },
+      {
+        id: 3,
+        name: "Hasan Sadikin S.pd ",
+        kode: "02",
+        mapel: "Kejuruan TKJ",
+        phone: "6281234567891",
+      },
+      {
+        id: 3,
+        name: "Ema Rosmawati S.S ",
+        kode: "02",
+        mapel: "Bahasa Inggris",
+        phone: "6281234567891",
+      },
+      {
+        id: 3,
+        name: "Cecep Rahmat Mudzakir S.Pd ",
+        kode: "02",
+        mapel: "BK",
+        phone: "6281234567891",
+      },{
+        id: 3,
+        name: "Hadi Abdul Fatah S.Pd ",
+        kode: "02",
+        mapel: "PKK",
+        phone: "6281234567891",
+      },
+      {
+        id: 3,
+        name: "Iwan Kurmawansyah S.T ",
+        kode: "02",
+        mapel: "Kejuruan TKJ",
+        phone: "6281234567891",
+      },{
+        id: 3,
+        name: "Tristo Wijanarko I,S.pd ",
+        kode: "02",
+        mapel: "Kejuruan TKJ",
+        phone: "6281234567891",
+      },{
+        id: 3,
+        name: "Ade Suprihat S.pd ",
         kode: "02",
         mapel: "Kejuruan TKJ",
         phone: "6281234567891",
@@ -42,7 +84,7 @@ const DATA = [
     ],
   },
   {
-    title: "L",
+    title: "",
     data: [
       { id: 3, name: "Legiyanto Spd", kode: "03", mapel: "BK", phone: "6281234567892" },
     ],

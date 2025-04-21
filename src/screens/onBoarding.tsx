@@ -1,8 +1,19 @@
-import { ChevronLeft, ChevronRight } from "lucide-react-native";
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import React, { useRef, useState } from "react";
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  Dimensions,
+  TouchableOpacity,
+  Animated,
+} from "react-native";
+
+const { width } = Dimensions.get("window");
 
 const OnboardingScreen = ({ navigation }: any) => {
+  const scrollX = useRef(new Animated.Value(0)).current;
+  const scrollRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(0);
 
   const pages = [
@@ -26,81 +37,95 @@ const OnboardingScreen = ({ navigation }: any) => {
     },
   ];
 
-  const handleNext = () => {
-    if (currentPage < pages.length - 1) {
-      setCurrentPage((prev) => prev + 1);
-    }
-  };
-
-  const handlePrev = () => {
-    if (currentPage > 0) {
-      setCurrentPage((prev) => prev - 1);
-    }
-  };
-
   const handleGetStarted = () => {
     navigation.navigate("AwalScreen");
   };
 
+  const handleScroll = (event: any) => {
+    const offsetX = event.nativeEvent.contentOffset.x;
+    const pageIndex = Math.round(offsetX / width);
+    setCurrentPage(pageIndex);
+  };
+
   return (
-    <View className="flex-1 bg-white justify-center items-center">
-      {/* Gambar Onboarding */}
-      <Image
-        source={pages[currentPage].image}
-        className="w-72 h-72 mb-6"
-        resizeMode="contain"
-      />
-
-      {/* Judul dan Deskripsi */}
-      <Text className="text-2xl font-bold text-blue-500 mb-2">
-        {pages[currentPage].title}
-      </Text>
-      <Text className="text-center text-gray-500 px-14 mb-4">
-        {pages[currentPage].description}
-      </Text>
-
-      {/* Indikator dan Tombol Navigasi */}
-      <View className="flex-row items-center justify-between w-full px-12">
-        {/* Tombol Prev */}
-        {currentPage > 0 && currentPage < 2 ? (
-          <TouchableOpacity
-            className="w-12 h-12 bg-white border border-primary rounded-md justify-center items-center"
-            onPress={handlePrev}
-          >
-            <ChevronLeft color="#2563eb" size={24} />
-          </TouchableOpacity>
-        ) : (
-          <View className="w-12 h-12" />
+    <View className="flex-1 bg-white">
+      <Animated.ScrollView
+        ref={scrollRef}
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+          {
+            useNativeDriver: false,
+            listener: handleScroll,
+          }
         )}
+        scrollEventThrottle={16}
+      >
+        {pages.map((page, index) => {
+          const inputRange = [
+            (index - 1) * width,
+            index * width,
+            (index + 1) * width,
+          ];
 
-        {/* Indikator dots */}
-        <View className="flex-row space-x-2">
-          {pages.map((_, index) => (
+          const opacity = scrollX.interpolate({
+            inputRange,
+            outputRange: [0, 1, 0],
+            extrapolate: "clamp",
+          });
+
+          const scale = scrollX.interpolate({
+            inputRange,
+            outputRange: [0.95, 1, 0.95],
+            extrapolate: "clamp",
+          });
+
+          return (
             <View
               key={index}
-              className={`w-2.5 h-2.5 rounded-full ${
-                currentPage === index ? "bg-primary" : "bg-gray-300"
-              }`}
-            />
-          ))}
-        </View>
+              style={{ width }}
+              className="justify-center items-center px-6"
+            >
+              <Animated.Image
+                source={page.image}
+                className="w-72 h-72 mb-6"
+                resizeMode="contain"
+                style={{ opacity, transform: [{ scale }] }}
+              />
+              <Animated.Text
+                className="text-2xl font-bold text-blue-500 mb-2 text-center"
+                style={{ opacity }}
+              >
+                {page.title}
+              </Animated.Text>
+              <Animated.Text
+                className="text-center text-gray-500 px-4"
+                style={{ opacity }}
+              >
+                {page.description}
+              </Animated.Text>
+            </View>
+          );
+        })}
+      </Animated.ScrollView>
 
-        {/* Tombol Next */}
-        {currentPage < pages.length - 1 ? (
-          <TouchableOpacity
-            className="w-12 h-12 bg-primary rounded-md justify-center items-center"
-            onPress={handleNext}
-          >
-            <ChevronRight color="white" size={24} />
-          </TouchableOpacity>
-        ) : (
-          <View className="w-12 h-12" />
-        )}
+      {/* Dot Indicator - naik dekat deskripsi */}
+      <View className="flex-row justify-center space-x-2 mt-3">
+        {pages.map((_, index) => (
+          <View
+            key={index}
+            className={`w-2.5 h-2.5 rounded-full ${
+              currentPage === index ? "bg-primary" : "bg-gray-300"
+            }`}
+          />
+        ))}
       </View>
 
       {/* Tombol Get Started */}
-      {currentPage === 2 && (
-        <View className="mt-6">
+      {currentPage === pages.length - 1 && (
+        <View className="items-center mt-6 mb-8">
           <TouchableOpacity
             className="w-72 h-12 bg-primary rounded-lg justify-center items-center"
             onPress={handleGetStarted}

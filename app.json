@@ -12,18 +12,23 @@
       "resizeMode": "contain",
       "backgroundColor": "#2264DC"
     },
-    "ios": {
-      "supportsTablet": true
-    },
+    "plugins": ["expo-location"],
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/image/Logo-lima.png",
         "backgroundColor": "#2264DC"
       },
+      "permissions": ["ACCESS_FINE_LOCATION"],
       "config": {
         "googleMaps": {
-          "apiKey" : "AIzaSyBgroDGURcI27X0yQC4Absz-czoKVQMjr0"
+          "apiKey": "AIzaSyBgroDGURcI27X0yQC4Absz-czoKVQMjr0"
         }
+      }
+    },
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Kami memerlukan lokasi untuk absensi."
       }
     },
     "web": {
